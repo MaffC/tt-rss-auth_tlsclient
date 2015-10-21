@@ -9,15 +9,15 @@
 
 /**
  * Inspired by the SSL client certificate support in auth_remote
- * Requires the following variables be set by the server (with or without REDIRECT_ prefix): {{{
+ * Requirements:
+ * PHP openssl module
+ *
+ * Web server must be configured to provide the following variables:
  * SSL_CLIENT_VERIFY
- * SSL_CLIENT_M_SERIAL
- * SSL_CLIENT_S_DN
  * SSL_CLIENT_CERT
  *
  * This plugin does not make full use of SSL_CLIENT_* variables set by apache2 mod_ssl
  * due to a lack of compatibility with what is available by default in nginx.
- * }}}
  */
 
 class Auth_TlsClient extends Plugin implements IAuthModule {
