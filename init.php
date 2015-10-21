@@ -48,16 +48,21 @@ class Auth_TlsClient extends Plugin implements IAuthModule {
 		return '';
 	}
 	private function _getCertFP() {
+		//Actually support REDIRECT_SSL_CLIENT_* like I said in the header from the beginning, oops
+		$ssl_verify = $_SERVER["SSL_CLIENT_VERIFY"];
+		if (!$ssl_verify) $ssl_verify = $_SERVER["REDIRECT_SSL_CLIENT_VERIFY"];
+		$ssl_cert = $_SERVER["SSL_CLIENT_CERT"];
+		if (!$ssl_cert) $ssl_cert = $_SERVER["REDIRECT_SSL_CLIENT_CERT"];
 		//We expect that the underlying webserver will have validated against a known CA
-		if ($_SERVER["SSL_CLIENT_VERIFY"] !== "SUCCESS") return false;
+		if ($ssl_verify !== "SUCCESS") return false;
 		//We also expect that the server passes the client certificate in PEM format
-		if (!strlen($_SERVER["SSL_CLIENT_CERT"])) return false;
+		if (!strlen($ssl_cert)) return false;
 		//Get the fingerprint of the certificate
 		//Try SHA256 first
-		$fp = openssl_x509_fingerprint($_SERVER["SSL_CLIENT_CERT"], 'sha256', false);
+		$fp = openssl_x509_fingerprint($ssl_cert, 'sha256', false);
 		if ($fp) return $fp;
 		//Else fall back to SHA1
-		return openssl_x509_fingerprint($_SERVER["SSL_CLIENT_CERT"], 'sha1', false);
+		return openssl_x509_fingerprint($ssl_cert, 'sha1', false);
 		//Not implementing an MD5 fallback because if you're still using MD5 certificates you clearly don't care about being secure
 	}
 	//}}}
