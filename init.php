@@ -51,7 +51,7 @@ class Auth_TlsClient extends Plugin implements IAuthModule {
 		//We expect that the underlying webserver will have validated against a known CA
 		if ($_SERVER["SSL_CLIENT_VERIFY"] !== "SUCCESS") return false;
 		//We also expect that the server passes the client certificate in PEM format
-		if (!length($_SERVER["SSL_CLIENT_CERT"])) return false;
+		if (!strlen($_SERVER["SSL_CLIENT_CERT"])) return false;
 		//Get the fingerprint of the certificate
 		//SHA1 is used because I'm not sure if SHA256 -can- be used.
 		return openssl_x509_fingerprint($_SERVER["SSL_CLIENT_CERT"], 'sha1', false);
