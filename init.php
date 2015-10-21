@@ -113,10 +113,13 @@ class Auth_TlsClient extends Plugin implements IAuthModule {
 		print "<input dojoType='dijit.form.TextBox' style='display:none' name='op' value='pluginhandler' />";
 		print "<input dojoType='dijit.form.TextBox' style='display:none' name='method' value='save' />";
 		print "<input dojoType='dijit.form.TextBox' style='display:none' name='plugin' value='auth_tlsclient' />";
-		print "<input dojoType='dijit.form.TextBox' name='certfp_cur' value='".$this->host->get($this, "auth_tlsclient_certfp")."' readonly />";
-		print "<input dojoType='dijit.form.TextBox' name='certfp' value='".$this->_getCertFP()."' readonly />";
-		print "<button dojoType='dijit.form.Button' onclick='dijit.byID(\"certfp\").attr(\"value\",\"\");'>".__('Clear certificate')."</button>";
-		print "<button dojoType='dijit.form.Button' type='submit'>".__('Update saved certificate')."</button>";
+		print "<label for='certfp_cur'>".__("Currently-stored client certificate")."</label>";
+		print "<input dojoType='dijit.form.TextBox' name='certfp_cur' value='".$this->host->get($this, "auth_tlsclient_certfp")."' readonly /><br />";
+		print "<label for='certfp'>".__("Client certificate to be stored")."</label>";
+		print "<input dojoType='dijit.form.TextBox' id='certfp' name='certfp' value='' readonly /><br />";
+		print "<button dojoType='dijit.form.Button' type='button' onclick='dijit.byId(\"certfp\").attr(\"value\",\"".$this->_getCertFP()."\");'>".__('Insert certificate')."</button>";
+		print "<button dojoType='dijit.form.Button' type='button' onclick='dijit.byId(\"certfp\").attr(\"value\",\"\");'>".__('Clear certificate')."</button><br />";
+		print "<button dojoType='dijit.form.Button' type='submit'>".__('Save')."</button>";
 		print "</form></div>";
 	}
 
